@@ -10,3 +10,6 @@
 [submodule "src/external/FW1FontWrapper"]
 	path = src/external/FW1FontWrapper
 	url = https://github.com/gamelaster/FW1FontWrapper.git
+[submodule "src/external/glm"]
+	path = src/external/glm
+	url = https://github.com/g-truc/glm.git
