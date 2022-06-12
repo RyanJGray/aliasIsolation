@@ -13,3 +13,6 @@
 [submodule "src/external/glm"]
 	path = src/external/glm
 	url = https://github.com/g-truc/glm.git
+[submodule "src/external/minhook"]
+	path = src/external/minhook
+	url = https://github.com/TsudaKageyu/minhook.git
