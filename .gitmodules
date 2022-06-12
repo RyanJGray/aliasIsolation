@@ -7,3 +7,6 @@
 [submodule "src/external/FX11"]
 	path = src/external/FX11
 	url = https://github.com/microsoft/FX11.git
+[submodule "src/external/FW1FontWrapper"]
+	path = src/external/FW1FontWrapper
+	url = https://github.com/gamelaster/FW1FontWrapper.git
