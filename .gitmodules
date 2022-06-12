@@ -16,3 +16,6 @@
 [submodule "src/external/minhook"]
 	path = src/external/minhook
 	url = https://github.com/TsudaKageyu/minhook.git
+[submodule "src/external/stb"]
+	path = src/external/stb
+	url = https://github.com/nothings/stb.git
