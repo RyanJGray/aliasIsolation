@@ -43,7 +43,7 @@ if defined %MSBUILD% (
 	echo 	Architecture:  %ARCHITECTURE%
 	echo 	VSWhere Path:  %VSWHERE%
 	echo 	MSBuild Path:  %MSBUILD%
-	echo	Extra Options: %TUNDRAEXTRAOPTS%
+	echo 	Extra Options: %TUNDRAEXTRAOPTS%
 	echo.
 	echo.
 
