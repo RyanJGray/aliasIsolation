@@ -60,12 +60,12 @@ local cinematicTools = SharedLibrary {
 		"src/external/boost",
 		"src/cinematicTools",
 		"src/cinematicTools/renderer",
-		"src/external/FW1FontWrapper_1_1",
+		"src/external/FW1FontWrapper/FW1FontWrapper/Source",
 		"src/external/FX11/inc",
 	},
 	Sources = {
 		Glob { Dir = "src/cinematicTools", Extensions = {".cpp", ".h"} },
-		Glob { Dir = "src/external/FW1FontWrapper_1_1/Source", Extensions = {".cpp", ".h"} },
+		Glob { Dir = "src/external/FW1FontWrapper/FW1FontWrapper/Source", Extensions = {".cpp", ".h"} },
 	},
 	Libs = {
 		{
