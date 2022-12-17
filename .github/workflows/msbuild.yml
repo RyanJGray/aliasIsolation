@@ -27,7 +27,7 @@ jobs:
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.1.3
 
-    - name: Download Boost ${{env.BOOST_VERSION}}
+    - name: Download Boost
       uses: carlosperate/download-file-action@v2.0.0
       id: download-boost-source
       with:
