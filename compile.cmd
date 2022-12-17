@@ -60,7 +60,7 @@ if defined %MSBUILD% (
 	rem DirectXTK sets _WIN32_WINNT to 0x0A00 (Windows 10 minimum) in their Win10 solution, which may affect our compatability with Windows 7 users.
 	rem We use the Win7 version of the solution so we get a build that still supports Windows 7.
 	rem FX11 does not have this issue as they set _WIN32_WINNT to 0x0601 (Windows 7 minimum) like we do.
-	"%MSBUILD%" -nologo -m -target:DirectXTK_Desktop_2019 -property:Configuration=%CONFIGURATION%;Platform=%ARCHITECTURE% src/external/DirectXTK/DirectXTK_Desktop_2019_Win7.sln
+	"%MSBUILD%" -nologo -m -target:DirectXTK_Desktop_2022 -property:Configuration=%CONFIGURATION%;Platform=%ARCHITECTURE% src/external/DirectXTK/DirectXTK_Desktop_2022_Win7.sln
 
 	rem If we do not have an errorlevel of 0, then something went wrong during the DirectXTK build.
 	if not %ERRORLEVEL% == 0 (
@@ -73,9 +73,9 @@ if defined %MSBUILD% (
 	rem HACK! FX11 uses a different platform name for x86 from DirectXTK.
 	rem Force it to Win32 if we are told to use x86, otherwise continue with the passed platform name (as they use x64 across both DirectXTK and FX11's project files).
 	if "%ARCHITECTURE%" == "x86" (
-		"%MSBUILD%" -nologo -m -target:Effects11 -property:Configuration=%CONFIGURATION%;Platform=Win32 src/external/FX11/Effects11_2019_Win10.sln
+		"%MSBUILD%" -nologo -m -target:Effects11 -property:Configuration=%CONFIGURATION%;Platform=Win32 src/external/FX11/Effects11_2022_Win10.sln
 	) else (
-		"%MSBUILD%" -nologo -m -target:Effects11 -property:Configuration=%CONFIGURATION%;Platform=%ARCHITECTURE% src/external/FX11/Effects11_2019_Win10.sln
+		"%MSBUILD%" -nologo -m -target:Effects11 -property:Configuration=%CONFIGURATION%;Platform=%ARCHITECTURE% src/external/FX11/Effects11_2022_Win10.sln
 	)
 
 	rem If we do not have an errorlevel of 0, then something went wrong during the FX11 build.
