@@ -21,19 +21,15 @@ local imgui = StaticLibrary {
 	Name = "imgui",
 	Includes = { "src/external/imgui" },
 	Sources = {
+	    "src/external/imgui/backends/imgui_impl_win32.cpp",
+	    "src/external/imgui/backends/imgui_impl_win32.h",
+	    "src/external/imgui/backends/imgui_impl_dx11.cpp",
+	    "src/external/imgui/backends/imgui_impl_dx11.h",
 	    Glob {
 	        Dir = "src/external/imgui",
 	        Extensions = { ".cpp", ".h" },
 	        Recursive = false
-	    },
-		FGlob {
-            Dir = "src/external/imgui/backends",
-            Extensions = { ".cpp", ".h" },
-            Filters = {
-                { Pattern = "dx11"; Config = "win*" },
-                { Pattern = "win32"; Config = "win*" },
-            }
-		}
+	    }
 	}
 }
 
