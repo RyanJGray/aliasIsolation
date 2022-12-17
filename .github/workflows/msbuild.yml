@@ -17,7 +17,10 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout repository and submodules
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1
@@ -28,9 +31,6 @@ jobs:
       with:
         file-url: https://boostorg.jfrog.io/artifactory/main/release/${{env.BOOST_VERSION}}/source/${{env.BOOST_SOURCE_DIRECTORY}}.7z
         location: C:\Temp
-
-    - name: Print out Boost source archive location
-      run: echo "Downloaded Boost source archive to ${{steps.download-boost-source.outputs.file-path}}"
 
     - name: Extract the Boost source archive
       working-directory: ${{env.GITHUB_WORKSPACE}}
