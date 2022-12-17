@@ -115,14 +115,15 @@ if defined %MSBUILD% (
     for /f "usebackq delims=" %%i in (`call "%VSWHERE%" -latest -property installationPath`) do (
       if exist "%%i\Common7\Tools\vsdevcmd.bat" (
         %comspec% /k "%%i\Common7\Tools\vsdevcmd.bat"
+        echo %PATH%
       )
     )
-	fxc.exe /nologo /T ps_4_0 /E mainPS /O3 /Ges /Qstrip_reflect /Qstrip_debug /Fo data/shaders/compiled/sharpen_ps.hlsl data/shaders/sharpen_ps.hlsl
-	fxc.exe /nologo /T ps_4_0 /E mainPS /O3 /Ges /Qstrip_reflect /Qstrip_debug /Fo data/shaders/compiled/shadowLinearize_ps.hlsl data/shaders/shadowLinearize_ps.hlsl
-	fxc.exe /nologo /T ps_4_0 /E mainPS /O3 /Ges /Qstrip_reflect /Qstrip_debug /Fo data/shaders/compiled/shadowDownsample_ps.hlsl data/shaders/shadowDownsample_ps.hlsl
-	fxc.exe /nologo /T ps_4_0 /E mainPS /O3 /Ges /Qstrip_reflect /Qstrip_debug /Fo data/shaders/compiled/chromaticAberration_ps.hlsl data/shaders/chromaticAberration_ps.hlsl
-	fxc.exe /nologo /T ps_4_0 /E mainPS /O3 /Ges /Qstrip_reflect /Qstrip_debug /Fo data/shaders/compiled/bloomMerge_ps.hlsl data/shaders/bloomMerge_ps.hlsl
-	fxc.exe /nologo /T vs_4_0 /E mainVS /O3 /Ges /Qstrip_reflect /Qstrip_debug /Fo data/shaders/compiled/mainPost_vs.hlsl data/shaders/mainPost_vs.hlsl
+	rem fxc.exe /nologo /T ps_4_0 /E mainPS /O3 /Ges /Qstrip_reflect /Qstrip_debug /Fo data/shaders/compiled/sharpen_ps.hlsl data/shaders/sharpen_ps.hlsl
+	rem fxc.exe /nologo /T ps_4_0 /E mainPS /O3 /Ges /Qstrip_reflect /Qstrip_debug /Fo data/shaders/compiled/shadowLinearize_ps.hlsl data/shaders/shadowLinearize_ps.hlsl
+	rem fxc.exe /nologo /T ps_4_0 /E mainPS /O3 /Ges /Qstrip_reflect /Qstrip_debug /Fo data/shaders/compiled/shadowDownsample_ps.hlsl data/shaders/shadowDownsample_ps.hlsl
+	rem fxc.exe /nologo /T ps_4_0 /E mainPS /O3 /Ges /Qstrip_reflect /Qstrip_debug /Fo data/shaders/compiled/chromaticAberration_ps.hlsl data/shaders/chromaticAberration_ps.hlsl
+	rem fxc.exe /nologo /T ps_4_0 /E mainPS /O3 /Ges /Qstrip_reflect /Qstrip_debug /Fo data/shaders/compiled/bloomMerge_ps.hlsl data/shaders/bloomMerge_ps.hlsl
+	rem fxc.exe /nologo /T vs_4_0 /E mainVS /O3 /Ges /Qstrip_reflect /Qstrip_debug /Fo data/shaders/compiled/mainPost_vs.hlsl data/shaders/mainPost_vs.hlsl
 
 	rem If we do not have an errorlevel of 0, then something went wrong during the shader compilation.
 	if not %ERRORLEVEL% == 0 (
