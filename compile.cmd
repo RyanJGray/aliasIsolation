@@ -17,6 +17,9 @@ if "%2" == "x64" (
 	set "ARCHITECTURE=x86"
 )
 
+rem Set extra options to be passed to Tundra.
+set "TUNDRAEXTRAOPTS=%3"
+
 rem Check for VSWhere on an x64 system and populate the VSWHEREPATH variable with that value.
 if exist "%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" (
 	set "VSWHERE=%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe"
@@ -40,6 +43,7 @@ if defined %MSBUILD% (
 	echo 	Architecture:  %ARCHITECTURE%
 	echo 	VSWhere Path:  %VSWHERE%
 	echo 	MSBuild Path:  %MSBUILD%
+	echo	Extra Options: %TUNDRAEXTRAOPTS%
 	echo.
 	echo.
 
@@ -87,9 +91,9 @@ if defined %MSBUILD% (
 	echo.
 	echo [Building Alias Isolation...]
 	if "%ARCHITECTURE%" == "x64" (
-		tools\tundra2\bin\tundra2.exe win64-msvc-%CONFIGURATION%-default
+		tools\tundra2\bin\tundra2.exe %TUNDRAEXTRAOPTS% win64-msvc-%CONFIGURATION%-default
 	) else (
-		tools\tundra2\bin\tundra2.exe win32-msvc-%CONFIGURATION%-default
+		tools\tundra2\bin\tundra2.exe %TUNDRAEXTRAOPTS% win32-msvc-%CONFIGURATION%-default
 	)
 
 	rem If we do not have an errorlevel of 0, then something went wrong during the Tundra build.
