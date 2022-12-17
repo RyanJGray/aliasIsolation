@@ -32,7 +32,7 @@ jobs:
       with:
         file-url: https://boostorg.jfrog.io/artifactory/main/release/${{env.BOOST_VERSION}}/source/${{env.BOOST_SOURCE_DIRECTORY}}.7z
         location: C:\Temp
-        sha256: 6c97cf4f4a0eb00ed776c88065ab3f59e183fa5e65f6464ff94f92328352d9d6
+        sha256: d7bc4e2a2aee374a8c24832cacfed1265680c1e824d09fab3e00f87508155353
 
     - name: Extract the Boost source archive
       working-directory: ${{env.GITHUB_WORKSPACE}}
