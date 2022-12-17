@@ -52,7 +52,6 @@ jobs:
 
       - name: Build Alias Isolation
         working-directory: ${{env.GITHUB_WORKSPACE}}
-        # Build Alias Isolation!
         run: ./release.cmd ${{env.BUILD_CONFIGURATION}} ${{env.BUILD_ARCHITECTURE}} ${{env.BUILD_EXTRA_OPTIONS}}
 
       - name: Package built files
@@ -63,5 +62,4 @@ jobs:
         with:
           repo_token: ${{secrets.GITHUB_TOKEN}}
           prerelease: false
-          files: |
-            AliasIsolation.7z
+          files: AliasIsolation.7z

@@ -49,12 +49,12 @@ jobs:
 
     - name: Build Alias Isolation
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      # Build Alias Isolation!
       run: ./release.cmd ${{env.BUILD_CONFIGURATION}} ${{env.BUILD_ARCHITECTURE}} ${{env.BUILD_EXTRA_OPTIONS}}
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3.1.1
       with:
         name: ${{env.BUILD_CONFIGURATION}} ${{env.BUILD_ARCHITECTURE}}
-        path: release
+        path: ${{env.BUILD_CONFIGURATION}}/${{env.BUILD_ARCHITECTURE}}
         if-no-files-found: error
+        retention-days: 1

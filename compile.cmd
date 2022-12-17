@@ -35,6 +35,13 @@ for /f "usebackq tokens=*" %%p in (`call "%VSWHERE%" -products * -latest -requir
 	set "MSBUILD=%%p"
 )
 
+@if not defined _echo echo off
+for /f "usebackq delims=" %%i in (`call "%VSWHERE%" -latest -property installationPath`) do (
+  if exist "%%i\Common7\Tools\vsdevcmd.bat" (
+    %comspec% /k "%%i\Common7\Tools\vsdevcmd.bat" %*
+  )
+)
+
 rem Do we have a non-empty MSBuild path?
 if defined %MSBUILD% (
 	echo --------------[Build Configuration]--------------
@@ -104,9 +111,23 @@ if defined %MSBUILD% (
 		tools\tundra2\bin\tundra2.exe %TUNDRAEXTRAOPTS% win32-msvc-%CONFIGURATION%-default
 	)
 
-	rem If we do not have an errorlevel of 0, then something went wrong during the Tundra build.
+    rem If we do not have an errorlevel of 0, then something went wrong during the Tundra build.
 	if not %ERRORLEVEL% == 0 (
-		echo [Build failed] Alias Isolation failed to build.
+		echo [Build failed] Alias Isolation failed to build during the Tundra build stage.
+		exit %ERRORLEVEL%
+	)
+
+	rem Precompile shaders to avoid runtime errors on Proton, due to unfinished Wine shader compiler code.
+	fxc.exe /nologo /T ps_4_0 /E mainPS /O3 /Ges /Qstrip_reflect /Qstrip_debug /Fo data/shaders/compiled/sharpen_ps.hlsl data/shaders/sharpen_ps.hlsl
+	fxc.exe /nologo /T ps_4_0 /E mainPS /O3 /Ges /Qstrip_reflect /Qstrip_debug /Fo data/shaders/compiled/shadowLinearize_ps.hlsl data/shaders/shadowLinearize_ps.hlsl
+	fxc.exe /nologo /T ps_4_0 /E mainPS /O3 /Ges /Qstrip_reflect /Qstrip_debug /Fo data/shaders/compiled/shadowDownsample_ps.hlsl data/shaders/shadowDownsample_ps.hlsl
+	fxc.exe /nologo /T ps_4_0 /E mainPS /O3 /Ges /Qstrip_reflect /Qstrip_debug /Fo data/shaders/compiled/chromaticAberration_ps.hlsl data/shaders/chromaticAberration_ps.hlsl
+	fxc.exe /nologo /T ps_4_0 /E mainPS /O3 /Ges /Qstrip_reflect /Qstrip_debug /Fo data/shaders/compiled/bloomMerge_ps.hlsl data/shaders/bloomMerge_ps.hlsl
+	fxc.exe /nologo /T vs_4_0 /E mainVS /O3 /Ges /Qstrip_reflect /Qstrip_debug /Fo data/shaders/compiled/mainPost_vs.hlsl data/shaders/mainPost_vs.hlsl
+
+	rem If we do not have an errorlevel of 0, then something went wrong during the shader compilation.
+	if not %ERRORLEVEL% == 0 (
+		echo [Build failed] Failed to compile the shaders for Alias Isolation.
 		exit %ERRORLEVEL%
 	)
 

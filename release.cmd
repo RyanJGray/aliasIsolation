@@ -52,10 +52,17 @@ rem Don't try to create the data folder if it already exists.
 if not exist "%DESTINATION%\data" (
     mkdir %DESTINATION%\data
 )
+if not exist "%DESTINATION%\data\textures" (
+    mkdir %DESTINATION%\data\textures
+)
+if not exist "%DESTINATION%\data\shaders\compiled" (
+    goto ERR_SHADER_COMPILATION_FAILED
+)
 
 echo.
 echo [Copying data files...]
-xcopy /Y /S /E data %DESTINATION%\data
+xcopy /Y /S /E data\shaders\compiled %DESTINATION%\data\shaders
+xcopy /Y /S /E data\textures %DESTINATION%\data\textures
 
 echo.
 echo [Copying README file...]
@@ -73,6 +80,11 @@ exit 1
 rem Alert the user that the architecture they requested is not supported.
 echo [Build failed] Target architecture "%2" is not supported.
 echo Only architectures "x86" and "x64" are currently supported.
+exit 1
+
+:ERR_SHADER_COMPILATION_FAILED
+rem Alert the user that the shaders failed to compile.
+echo [Build failed] Shader compilation failed, could not locate compiled shader files.
 exit 1
 
 :END
