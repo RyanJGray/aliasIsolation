@@ -8,8 +8,8 @@ env:
   # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
   BUILD_CONFIGURATION: release
   BUILD_ARCHITECTURE: x86
-  BOOST_VERSION: 1.79.0
-  BOOST_SOURCE_DIRECTORY: boost_1_79_0
+  BOOST_VERSION: 1.81.0
+  BOOST_SOURCE_DIRECTORY: boost_1_81_0
   BOOST_SOURCE_LOCATION: src\external\boost
 
 jobs:
@@ -26,9 +26,7 @@ jobs:
       uses: carlosperate/download-file-action@v1.0.3
       id: download-boost-source
       with:
-        # Boost source 7zip package URL.
         file-url: https://boostorg.jfrog.io/artifactory/main/release/${{env.BOOST_VERSION}}/source/${{env.BOOST_SOURCE_DIRECTORY}}.7z
-        # Temporary directory for the Boost source archive during build.
         location: C:\Temp
 
     - name: Print out Boost source archive location
@@ -54,8 +52,6 @@ jobs:
     - name: Upload build artifacts
       uses: actions/upload-artifact@v2.2.3
       with:
-        # Artifact name
         name: ${{env.BUILD_CONFIGURATION}} ${{env.BUILD_ARCHITECTURE}}
-        # Use the release.cmd artifacts path (a folder called "release").
         path: release
         if-no-files-found: error
