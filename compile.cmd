@@ -113,12 +113,12 @@ if defined %MSBUILD% (
 	rem Precompile shaders to avoid runtime errors on Proton, due to unfinished Wine shader compiler code.
     @if not defined _echo echo off
     for /f "usebackq delims=" %%i in (`call "%VSWHERE%" -latest -property installationPath`) do (
-      if exist "%%i\Common7\Tools\vsdevcmd.bat" (
-        %comspec% /k "%%i\Common7\Tools\vsdevcmd.bat"
-        echo "%PATH%"
+      if exist "%%i\VC\Auxiliary\Build\vcvars64.bat" (
+        %comspec% /k "%%i\VC\Auxiliary\Build\vcvars64.bat"
+        set
       )
     )
-	rem fxc.exe /nologo /T ps_4_0 /E mainPS /O3 /Ges /Qstrip_reflect /Qstrip_debug /Fo data/shaders/compiled/sharpen_ps.hlsl data/shaders/sharpen_ps.hlsl
+	fxc.exe /nologo /T ps_4_0 /E mainPS /O3 /Ges /Qstrip_reflect /Qstrip_debug /Fo data/shaders/compiled/sharpen_ps.hlsl data/shaders/sharpen_ps.hlsl
 	rem fxc.exe /nologo /T ps_4_0 /E mainPS /O3 /Ges /Qstrip_reflect /Qstrip_debug /Fo data/shaders/compiled/shadowLinearize_ps.hlsl data/shaders/shadowLinearize_ps.hlsl
 	rem fxc.exe /nologo /T ps_4_0 /E mainPS /O3 /Ges /Qstrip_reflect /Qstrip_debug /Fo data/shaders/compiled/shadowDownsample_ps.hlsl data/shaders/shadowDownsample_ps.hlsl
 	rem fxc.exe /nologo /T ps_4_0 /E mainPS /O3 /Ges /Qstrip_reflect /Qstrip_debug /Fo data/shaders/compiled/chromaticAberration_ps.hlsl data/shaders/chromaticAberration_ps.hlsl
