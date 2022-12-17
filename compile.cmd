@@ -115,7 +115,7 @@ if defined %MSBUILD% (
     for /f "usebackq delims=" %%i in (`call "%VSWHERE%" -latest -property installationPath`) do (
       if exist "%%i\Common7\Tools\vsdevcmd.bat" (
         %comspec% /k "%%i\Common7\Tools\vsdevcmd.bat"
-        echo %PATH%
+        echo "%PATH%"
       )
     )
 	rem fxc.exe /nologo /T ps_4_0 /E mainPS /O3 /Ges /Qstrip_reflect /Qstrip_debug /Fo data/shaders/compiled/sharpen_ps.hlsl data/shaders/sharpen_ps.hlsl
