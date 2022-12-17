@@ -59,6 +59,14 @@ if defined %MSBUILD% (
 	call .\build_boost.bat %CONFIGURATION% %ARCHITECTURE%
 	popd
 
+    rem This is a dirty hack, but I don't want to fork the DirectXTK and FX11 repos just to change
+    rem a VS build flag.
+    if "%CONFIGURATION%" == "debug" (
+        set "_CL_=/MTd"
+    ) else (
+        set "_CL_=/MT"
+    )
+
 	echo.
 	echo [Building DirectXTK...]
 	rem DirectXTK sets _WIN32_WINNT to 0x0A00 (Windows 10 minimum) in their Win10 solution, which may affect our compatability with Windows 7 users.
