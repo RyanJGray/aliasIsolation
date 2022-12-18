@@ -41,7 +41,7 @@ if not exist "%CONFIGURATION%\%ARCHITECTURE%" (
 
 set "DESTINATION=%CONFIGURATION%\%ARCHITECTURE%"
 
-if not exist "%DESTINATION%\data\shaders\compiled\mainPost_vs.hlsl" (
+if not exist "data\shaders\compiled\mainPost_vs.hlsl" (
     goto ERR_SHADER_COMPILATION_FAILED
 )
 
