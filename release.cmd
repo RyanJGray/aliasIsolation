@@ -47,10 +47,10 @@ if not exist "data\shaders\compiled\mainPost_vs.hlsl" (
 
 echo.
 echo [Copying build products...]
-xcopy /Y t2-output\%TUNDRATARGET%\aliasIsolation.dll %DESTINATION%\aliasIsolation.asi
-xcopy /Y t2-output\%TUNDRATARGET%\aliasIsolation.pdb %DESTINATION%
-xcopy /Y t2-output\%TUNDRATARGET%\cinematicTools.dll %DESTINATION%
-xcopy /Y t2-output\%TUNDRATARGET%\cinematicTools.pdb %DESTINATION%
+copy /y /b t2-output\%TUNDRATARGET%\aliasIsolation.dll %DESTINATION%\aliasIsolation.asi
+copy /y /b t2-output\%TUNDRATARGET%\aliasIsolation.pdb %DESTINATION%
+copy /y /b t2-output\%TUNDRATARGET%\cinematicTools.dll %DESTINATION%
+copy /y /b t2-output\%TUNDRATARGET%\cinematicTools.pdb %DESTINATION%
 
 rem Don't try to create the data folder if it already exists.
 if not exist "%DESTINATION%\data" (
@@ -70,7 +70,7 @@ xcopy /Y /S /E data\textures %DESTINATION%\data\textures
 
 echo.
 echo [Copying README file...]
-xcopy /Y README.txt %DESTINATION%
+copy /a /y README.txt %DESTINATION%
 
 goto END
 
