@@ -485,7 +485,7 @@ void Hooks::Init()
 
 	DWORD dwAppProfile = (DWORD)GetModuleHandle("AppProfiles.dll");
 	DWORD dwDXGI = (DWORD)GetModuleHandle("dxgi.dll");
-	DWORD dwAliasIsolation = (DWORD)GetModuleHandle("aliasIsolation.dll");
+	DWORD dwAliasIsolation = (DWORD)GetModuleHandle("aliasIsolation.asi");
 
 	Log::Write("AppProfiles: 0x" + Log::convertToHexa(dwAppProfile));
 	Log::Write("DXGI: 0x" + Log::convertToHexa(dwDXGI));
