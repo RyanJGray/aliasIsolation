@@ -43,7 +43,7 @@ int __cdecl ovr_Initialize_hook(const void* params)
 void* ovr_Initialize_handle = nullptr;
 
 // This will prevent the Oculus runtime from initializing. This mod doesn't support the unofficial OVR mode.
-// It would look completely broken, and might also give some trouble dependong on what the Oculus SDK does.
+// It would look completely broken, and might also give some trouble depending on what the Oculus SDK does.
 void disableOvr()
 {
 	HMODULE hModule = GetModuleHandleA("AI.exe");
@@ -56,13 +56,10 @@ void disableOvr()
 	}
 }
 
-/*
-TODO! Get Cinematic Tools working again.
 void loadCinematicTools()
 {
-	LoadLibraryA(g_dllParams.cinematicToolsDllPath);
+	LoadLibraryA("cinematicTools.dll");
 }
-*/
 
 char g_modulePath[_MAX_PATH];
 char CreateProcessW_hookBytesHead[8];
@@ -194,8 +191,6 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 		freopen("CONOUT$", "w", stderr);
 #endif
 
-		//MessageBoxA(NULL, "DLL_PROCESS_ATTACH", NULL, NULL);
-
 		MH_CHECK(MH_Initialize());
 		LOG_MSG("[aliasIsolation::dllMain] MH_Initialize()\n", "");
 
@@ -228,20 +223,15 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 		CreateThread(NULL, NULL, &terminationWatchThread, NULL, NULL, NULL);
 		LOG_MSG("[aliasIsolation::dllMain] CreateThread(&terminationWatchThread)\n", "");
 
-		/*
-		TODO! Get Cinematic Tools working again.
-		if (g_dllParams.cinematicToolsEnable && GetModuleHandleA("AI.exe"))
+		if (GetModuleHandleA("AI.exe"))
 		{
 			loadCinematicTools();
 			LOG_MSG("[aliasIsolation::dllMain] loadCinematicTools()\n", "");
 		}
-		*/
 
 		break;
 	}
 	case DLL_PROCESS_DETACH:
-		//MessageBoxA(NULL, "DLL_PROCESS_DETACH", NULL, NULL);
-
 		if (ovr_Initialize_handle)
 		{
 			MH_CHECK(MH_DisableHook(ovr_Initialize_handle));
