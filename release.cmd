@@ -41,9 +41,13 @@ if not exist "%CONFIGURATION%\%ARCHITECTURE%" (
 
 set "DESTINATION=%CONFIGURATION%\%ARCHITECTURE%"
 
+if not exist "%DESTINATION%\data\shaders\compiled\mainPost_vs.hlsl" (
+    goto ERR_SHADER_COMPILATION_FAILED
+)
+
 echo.
 echo [Copying build products...]
-xcopy /Y t2-output\%TUNDRATARGET%\aliasIsolation.dll %DESTINATION%
+xcopy /Y t2-output\%TUNDRATARGET%\aliasIsolation.dll %DESTINATION%\aliasIsolation.asi
 xcopy /Y t2-output\%TUNDRATARGET%\aliasIsolation.pdb %DESTINATION%
 xcopy /Y t2-output\%TUNDRATARGET%\cinematicTools.dll %DESTINATION%
 xcopy /Y t2-output\%TUNDRATARGET%\cinematicTools.pdb %DESTINATION%
@@ -55,8 +59,8 @@ if not exist "%DESTINATION%\data" (
 if not exist "%DESTINATION%\data\textures" (
     mkdir %DESTINATION%\data\textures
 )
-if not exist "%DESTINATION%\data\shaders\compiled" (
-    goto ERR_SHADER_COMPILATION_FAILED
+if not exist "%DESTINATION%\data\shaders" (
+    mkdir %DESTINATION%\data\shaders
 )
 
 echo.
