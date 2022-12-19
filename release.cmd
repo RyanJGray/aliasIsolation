@@ -52,27 +52,24 @@ copy /y /b t2-output\%TUNDRATARGET%\aliasIsolation.pdb %DESTINATION%
 copy /y /b t2-output\%TUNDRATARGET%\cinematicTools.dll %DESTINATION%
 copy /y /b t2-output\%TUNDRATARGET%\cinematicTools.pdb %DESTINATION%
 
-rem Don't try to create the data folder if it already exists.
+rem Don't try to create the mods folder if it already exists.
 if not exist "%DESTINATION%\mods" (
     mkdir %DESTINATION%\mods
 )
 if not exist "%DESTINATION%\mods\aliasIsolation" (
     mkdir %DESTINATION%\mods\aliasIsolation
 )
-if not exist "%DESTINATION%\mods\aliasIsolation\data" (
-    mkdir %DESTINATION%\mods\aliasIsolation\data
+if not exist "%DESTINATION%\data\textures" (
+    mkdir %DESTINATION%\data\textures
 )
-if not exist "%DESTINATION%\mods\aliasIsolation\data\textures" (
-    mkdir %DESTINATION%\mods\aliasIsolation\data\textures
-)
-if not exist "%DESTINATION%\mods\aliasIsolation\data\shaders" (
-    mkdir %DESTINATION%\mods\aliasIsolation\data\shaders
+if not exist "%DESTINATION%\data\shaders" (
+    mkdir %DESTINATION%\data\shaders
 )
 
 echo.
 echo [Copying data files...]
-xcopy /Y /S /E data\shaders\compiled %DESTINATION%\mods\aliasIsolation\data\shaders
-xcopy /Y /S /E data\textures %DESTINATION%\mods\aliasIsolation\data\textures
+xcopy /Y /S /E data\shaders\compiled %DESTINATION%\data\shaders
+xcopy /Y /S /E data\textures %DESTINATION%\data\textures
 
 echo.
 echo [Copying README file...]
