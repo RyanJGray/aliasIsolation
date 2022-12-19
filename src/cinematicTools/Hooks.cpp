@@ -398,6 +398,7 @@ void Hooks::Init()
 	if (!dxHooked)
 	{
 		HANDLE thread = CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)InitializeHook, NULL, NULL, NULL);
+        CloseHandle(thread);
 	}
 
 	Sleep(100);
