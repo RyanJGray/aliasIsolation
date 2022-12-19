@@ -83,173 +83,6 @@ int __stdcall hAppProfile(int a1, int a2, int a3)
 	return oAppProfile(a1, a2, a3);
 }
 
-/*
-bool firstTime;
-bool FW1_Successful;
-
-DWORD* pSwapChainVtable = NULL;
-DWORD* pDeviceContextVTable = NULL;
-
-ID3D11Device *pDevice = NULL;
-ID3D11DeviceContext *pContext = NULL;
-IDXGISwapChain* pSwapChain = NULL;
-IFW1FontWrapper *pFontWrapper = NULL;
-
-void* phookD3D11Present = NULL;
-void* detourBuffer = NULL;
-
-
-
-*/
-
-/*
-void __declspec(naked) PresentNakedHookFunc()
-{
-	__asm
-	{
-		push esi;
-	}
-
-	if (firstTime)
-	{
-		__asm
-		{
-			push eax
-				mov eax, [ebp + 8]
-				mov pSwapChain, eax
-				pop eax
-		}
-
-		pSwapChain->GetDevice(__uuidof(pDevice), (void**)&pDevice);
-		pDevice->GetImmediateContext(&pContext);
-
-		IFW1Factory* pFW1Factory;
-		FW1CreateFactory(FW1_VERSION, &pFW1Factory);
-		pFW1Factory->CreateFontWrapper(pDevice, L"Tahoma", &pFontWrapper);
-		pFW1Factory->Release();
-
-		HMODULE dwModule = GetModuleHandle("AlienIsolation.dll");
-
-		printf("dwModule: %X\n", dwModule);
-
-		HRSRC hRes = FindResource(dwModule, MAKEINTRESOURCE(IDR_0_1), "0");
-		printf("hRes: %X\n", hRes);
-		HGLOBAL hData = LoadResource(dwModule, hRes);
-		printf("hData: %X\n", hData);
-		printf("Error: %X\n", GetLastError());
-		LPVOID data = LockResource(hData);
-		printf("Data: %X\n", data);
-		DWORD size = SizeofResource(dwModule, hRes);
-		printf("Size: %X\n", size);
-
-		Sleep(100);
-
-		HRESULT result = NULL; //CreateWICTextureFromFile(pDevice, L"test.jpg", &resource, &resourceView);
-		DWORD dwVirtualProtectBackup;
-		VirtualProtect(data, size, PAGE_READWRITE, &dwVirtualProtectBackup);
-		result = CreateWICTextureFromMemory(pDevice, (const uint8_t*)data, (size_t)size, &resource, &resourceView);
-		//result = CreateWICTextureFromMemoryEx(pDevice, pContext, (const uint8_t*)data, (size_t)size, 0, D3D11_USAGE_DEFAULT, 0, 0, 0, false, &resource, &resourceView);
-		if (FAILED(result))
-			printf("Failed\n");
-
-		printf("Error: %X\n", GetLastError());
-
-		InitSpriteBatch();
-
-		//Main::m_menu.Init(pSwapChain);
-
-		firstTime = false;
-	}
-
-	pFontWrapper->DrawString(pContext, L"It works", 50.0f, 100.0f, 100.0f, 0xFFFFFFFF, 0);
-	//Main::m_menu.Draw();
-	//drawSpriteBatch();
-
-	__asm
-	{
-		pop esi
-			jmp phookD3D11Present
-	}
-}
-
-const void* __cdecl DetourFunc(BYTE* src, const BYTE* dest, const DWORD length)
-{
-	BYTE* jump = new BYTE[length + 5];
-	detourBuffer = jump;
-
-	DWORD dwVirtualProtectBackup;
-	VirtualProtect(src, length, PAGE_READWRITE, &dwVirtualProtectBackup);
-
-	memcpy(jump, src, length);
-	jump += length;
-
-	jump[0] = 0xE9;
-	*(DWORD*)(jump + 1) = (DWORD)(src + length - jump) - 5;
-
-	src[0] = 0xE9;
-	*(DWORD*)(src + 1) = (DWORD)(dest - src) - 5;
-
-	VirtualProtect(src, length, dwVirtualProtectBackup, &dwVirtualProtectBackup);
-
-	return jump - length;
-}
-
-void InitializeHook()
-{
-	HWND hWnd = FindWindow(NULL, "Alien: Isolation");
-	DWORD dwVersion = GetVersion();
-	int offset = NULL;
-
-	DWORD dwMajorVersion = (DWORD)(LOBYTE(LOWORD(dwVersion)));
-	DWORD dwMinorVersion = (DWORD)(HIBYTE(LOWORD(dwVersion)));
-
-
-	if (dwMinorVersion < 2)
-		offset = 0x19;
-	else
-		offset = 0xB;
-
-	Log::Write("Major: " + to_string(dwMajorVersion) + " Minor: " + to_string(dwMinorVersion));
-
-	D3D_FEATURE_LEVEL featureLevel = D3D_FEATURE_LEVEL_11_0;
-	DXGI_SWAP_CHAIN_DESC swapChainDesc;
-	ZeroMemory(&swapChainDesc, sizeof(swapChainDesc));
-	swapChainDesc.BufferCount = 1;
-	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	swapChainDesc.OutputWindow = hWnd;
-	swapChainDesc.SampleDesc.Count = 1;
-	swapChainDesc.Windowed = GetWindowLong(hWnd, GWL_STYLE) & WS_POPUP != 0 ? FALSE : TRUE;
-	swapChainDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-	swapChainDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-
-	if (FAILED(D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, NULL, &featureLevel, 1
-		, D3D11_SDK_VERSION, &swapChainDesc, &pSwapChain, &pDevice, NULL, &pContext)))
-	{
-		Log::WriteError("Couldn't create device");
-		return;
-	}
-
-	pSwapChainVtable = (DWORD*)pSwapChain;
-	pSwapChainVtable = (DWORD*)pSwapChainVtable[0];
-
-	pDeviceContextVTable = (DWORD*)pContext;
-	pDeviceContextVTable = (DWORD*)pDeviceContextVTable[0];
-
-	phookD3D11Present = (void*)DetourFunc((BYTE*)((int)pSwapChainVtable[8] + offset), (BYTE*)PresentNakedHookFunc, 5);
-
-	DWORD dwOld;
-	VirtualProtect(phookD3D11Present, 2, PAGE_EXECUTE_READWRITE, &dwOld);
-
-	pDevice->Release();
-	pContext->Release();
-	pSwapChain->Release();
-
-	return;
-}
-*/
-
 typedef HRESULT(WINAPI * tD3D11Present)(IDXGISwapChain*, UINT, UINT);
 typedef void(__stdcall *D3D11DrawIndexedHook) (ID3D11DeviceContext* pContext, UINT IndexCount, UINT StartIndexLocation, INT BaseVertexLocation);
 typedef void(__stdcall *D3D11ClearRenderTargetViewHook) (ID3D11DeviceContext* pContext, ID3D11RenderTargetView *pRenderTargetView, const FLOAT ColorRGBA[4]);
@@ -324,7 +157,6 @@ bool failed = false;
 
 DWORD __stdcall InitializeHook(LPVOID)
 {
-	//Sleep(2000);
 	HWND hWnd = GetForegroundWindow();
 	if (!hWnd)
 		Log::WriteError("Couldn't get AI.exe");
@@ -338,7 +170,7 @@ DWORD __stdcall InitializeHook(LPVOID)
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	swapChainDesc.OutputWindow = hWnd;
 	swapChainDesc.SampleDesc.Count = 1;
-	swapChainDesc.Windowed = GetWindowLong(hWnd, GWL_STYLE) & WS_POPUP != 0 ? FALSE : TRUE;
+	swapChainDesc.Windowed = (GetWindowLong(hWnd, GWL_STYLE) & WS_POPUP) != 0 ? FALSE : TRUE;
 	swapChainDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 	swapChainDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
@@ -369,10 +201,6 @@ DWORD __stdcall InitializeHook(LPVOID)
 
 	if (MH_EnableHook((PVOID*)pSwapChainVtable[8]) != MH_OK)
 		Log::WriteError("Couldn't enable D3D11 hook");
-
-	//phookD3D11Present = (tD3D11Present)DetourFunc((BYTE*)pSwapChainVtable[8], (BYTE*)hD3D11Present, 5);
-	//phookD3D11DrawIndexed = (D3D11DrawIndexedHook)DetourFunc((BYTE*)pDeviceContextVTable[12], (BYTE*)hookD3D11DrawIndexed, 5);
-	//phookD3D11ClearRenderTargetView = (D3D11ClearRenderTargetViewHook)DetourFunc((BYTE*)pDeviceContextVTable[50], (BYTE*)hookD3D11ClearRenderTargetView, 5);
 
 	DWORD dwOld;
 	VirtualProtect(phookD3D11Present, 2, PAGE_EXECUTE_READWRITE, &dwOld);
@@ -434,18 +262,6 @@ float __fastcall hCamera3(void* This, void* Unused, int a1, int a2, int a3)
 int __fastcall hRotation(void* This, void* Unused, void* a2, void* a3, void* a4, void* a5)
 {
 	Main::m_camera.rotationHook(This);
-	//Log::Write("Unused: " + Log::convertToHexa(Unused));
-	/*
-	int address;
-
-	__asm
-	{
-		mov[address], edi
-	}
-
-	Log::Write("Address: 0x" + Log::convertToHexa(address));
-	*/
-
 	return oRotation(This, a2, a3, a4, a5);
 }
 
@@ -490,7 +306,6 @@ void Hooks::Init()
 	Log::Write("AppProfiles: 0x" + Log::convertToHexa(dwAppProfile));
 	Log::Write("DXGI: 0x" + Log::convertToHexa(dwDXGI));
 	Log::Write("aliasIsolation: 0x" + Log::convertToHexa(dwAliasIsolation));
-
 
 	if (MH_Initialize() != MH_OK)
 		Log::WriteError("Couldn't initialize MinHook");
@@ -540,13 +355,12 @@ void Hooks::Init()
 	if (MH_EnableHook((PVOID*)Offsets::AI_UI) != MH_OK)
 		Log::WriteError("Couldn't enable UI hook");
 
-	if (dwAliasIsolation != NULL && !dxHooked)
+	if (dwAliasIsolation != NULL)
 	{
 		void *const hookableOverlay_handle = (LPVOID)GetProcAddress((HMODULE)dwAliasIsolation, "aliasIsolation_hookableOverlayRender");
 		if (hookableOverlay_handle)
 		{
-			void* orig;
-			if (MH_CreateHook(hookableOverlay_handle, &overlayRenderHook, &orig) == MH_OK && MH_EnableHook(hookableOverlay_handle) == MH_OK) {
+			if (MH_CreateHook(hookableOverlay_handle, &overlayRenderHook, NULL) == MH_OK && MH_EnableHook(hookableOverlay_handle) == MH_OK) {
 				Log::Write("Alias Isolation overlay hooked");
 				dxHooked = true;
 			}
@@ -585,8 +399,10 @@ void Hooks::Init()
 	{
 		HANDLE thread = CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)InitializeHook, NULL, NULL, NULL);
 	}
+
 	Sleep(100);
-	if (failed)
+
+    if (failed)
 	{
 		Log::WriteWarning("DX hook failed, entering special Hoodoo_Operator procedure");
 		Log::Write("DXGI: 0x" + Log::convertToHexa(dwDXGI));
