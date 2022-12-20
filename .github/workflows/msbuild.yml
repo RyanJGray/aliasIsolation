@@ -57,7 +57,7 @@ jobs:
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3.1.1
       with:
-        name: ${{env.BUILD_CONFIGURATION}} ${{env.BUILD_ARCHITECTURE}}
-        path: ${{env.BUILD_CONFIGURATION}}/${{env.BUILD_ARCHITECTURE}}
+        name: ${{matrix.configuration}} ${{env.BUILD_ARCHITECTURE}}
+        path: ${{matrix.configuration}}/${{env.BUILD_ARCHITECTURE}}
         if-no-files-found: error
         retention-days: 1
