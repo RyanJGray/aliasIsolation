@@ -11,7 +11,6 @@ namespace fs = std::filesystem;
 #include "fnTypes.h"
 #include "rendering.h"
 #include "common.h"
-#include "injection.h"
 #include "crashHandler.h"
 #include "settings.h"
 #include "utilities.h"
