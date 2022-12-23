@@ -13,6 +13,7 @@
 #include "profiler.h"
 #include "settings.h"
 #include "utilities.h"
+#include "common.h"
 
 extern ID3D11Device*		g_device;
 extern ID3D11DeviceContext*	g_deferred_context;
@@ -263,7 +264,9 @@ bool caOnDraw(ID3D11DeviceContext* context, ID3D11VertexShader* currentVs, ID3D1
 		ProfileBlock profile("ca");
 		context->Draw(3, 0);
 
-		aliasIsolation_hookableOverlayRender(g_device, context);
+        LOG_MSG("[aliasIsolation::post] caOnDraw - Finished.\n", "");
+        aliasIsolation_hookableOverlayRender(g_device, context);
+        LOG_MSG("[aliasIsolation::post] caOnDraw - Calling aliasIsolation_hookableOverlayRender.\n", "");
 
 		return true;
 	}

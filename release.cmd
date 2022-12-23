@@ -52,7 +52,7 @@ copy /y /b t2-output\%TUNDRATARGET%\aliasIsolation.pdb %DESTINATION%
 copy /y /b t2-output\%TUNDRATARGET%\cinematicTools.dll %DESTINATION%
 copy /y /b t2-output\%TUNDRATARGET%\cinematicTools.pdb %DESTINATION%
 
-rem Don't try to create the data folder if it already exists.
+rem Don't try to create the mods folder if it already exists.
 if not exist "%DESTINATION%\mods" (
     mkdir %DESTINATION%\mods
 )
