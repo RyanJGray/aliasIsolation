@@ -73,7 +73,6 @@ void finishFrame() {
 	g_frameConstants.taaRanThisFrame = false;
 	ShaderRegistry::releaseUnused();
 	g_frameConstants.prevViewProjNoJitter = g_frameConstants.currViewProjNoJitter;
-	loadSettings(&g_settings);
 }
 
 // ----------------------------------------------------------------------------------------------------------------
