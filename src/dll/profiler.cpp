@@ -15,7 +15,7 @@
 using std::string;
 using std::map;
 
-#ifdef _DEBUG
+#ifdef PROFILE
 	#define PROFILER_ENABLE 1
 #else
 	#define PROFILER_ENABLE 0
