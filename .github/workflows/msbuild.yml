@@ -30,7 +30,15 @@ jobs:
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.1.3
 
+    - name: Restore Boost cache
+      id: boost-cache
+      uses: actions/cache@v3.2.1
+      with:
+        path: src\external\boost
+        key: ${{env.BOOST_SOURCE_DIRECTORY}}
+        
     - name: Download Boost
+      if: steps.boost-cache.outputs.cache-hit != 'true'
       uses: carlosperate/download-file-action@v2.0.0
       id: download-boost-source
       with:
@@ -39,26 +47,29 @@ jobs:
         sha256: d7bc4e2a2aee374a8c24832cacfed1265680c1e824d09fab3e00f87508155353
 
     - name: Extract the Boost source archive
+      if: steps.boost-cache.outputs.cache-hit != 'true'
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: 7z.exe x ${{steps.download-boost-source.outputs.file-path}} -osrc\external\boost
 
     - name: Move the Boost source files to the location expected by Tundra
+      if: steps.boost-cache.outputs.cache-hit != 'true'
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: move src\external\boost\${{env.BOOST_SOURCE_DIRECTORY}}\* src\external\boost
 
     - name: Remove unneeded Boost source directory
+      if: steps.boost-cache.outputs.cache-hit != 'true'
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: rmdir src\external\boost\${{env.BOOST_SOURCE_DIRECTORY}}
-      
-    - name: Cache Boost
-      uses: actions/cache@v3.2.1
-      with:
-        path: src\external\boost
-        key: ${{env.BOOST_SOURCE_DIRECTORY}}
 
     - name: Build Alias Isolation
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: ./release.cmd ${{matrix.configuration}} ${{env.BUILD_ARCHITECTURE}} ${{env.BUILD_EXTRA_OPTIONS}}
+
+    - name: Cache Boost files
+      uses: actions/cache@v3.2.1
+      with:
+        path: src\external\boost
+        key: ${{env.BOOST_SOURCE_DIRECTORY}}
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3.1.1
