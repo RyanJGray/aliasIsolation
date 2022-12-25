@@ -186,7 +186,8 @@ bool taaOnDraw(ID3D11DeviceContext* context, ID3D11VertexShader* currentVs, ID3D
 				g_frameConstants.taaRanThisFrame = true;
 				++g_frameConstants.taaSampleIdx;
 			} else {
-                LOG_MSG("[aliasIsolation::taa] taaOnDraw - mainTexDesc.Format = %d, mainTexDesc.BindFlags = %d\n", mainTexDesc.Format, mainTexDesc.BindFlags);
+                LOG_MSG("[aliasIsolation::taa] taaOnDraw - mainTexDesc.Format = %d\n", mainTexDesc.Format);
+                LOG_MSG("[aliasIsolation::taa] taaOnDraw - mainTexDesc.BindFlags = %d\n", mainTexDesc.BindFlags);
             }
 
 			return true;

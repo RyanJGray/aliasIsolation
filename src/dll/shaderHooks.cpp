@@ -107,7 +107,7 @@ HRESULT WINAPI CreatePixelShader_hook(void* thisptr, const char* bytecode, SIZE_
 			}
 
 			// Replace the original SMAA spatial pass by a post-sharpening filter
-			/*if (hash[0] == 0x02b5231b && hash[1] == 0x8b3879b8 && hash[2] == 0x7db9bc8d && hash[3] == 0xf46a9d78)
+			if (hash[0] == 0x02b5231b && hash[1] == 0x8b3879b8 && hash[2] == 0x7db9bc8d && hash[3] == 0xf46a9d78)
 			{
 				g_sharpenPsHandle = ShaderRegistry::addPixelShader("sharpen_ps.hlsl");
 				replacePixelShader(*pixelShader, g_sharpenPsHandle);
@@ -115,7 +115,7 @@ HRESULT WINAPI CreatePixelShader_hook(void* thisptr, const char* bytecode, SIZE_
 			}
 
 			// Replace the shadow-map linearize shader with one with better numerical stability. The original flickers in vanilla Alien.
-			if (hash[0] == 0x3c7b9d08 && hash[1] == 0x7b3adf54 && hash[2] == 0x3bfc6b9d && hash[3] == 0x1b0ec92e)
+			/*if (hash[0] == 0x3c7b9d08 && hash[1] == 0x7b3adf54 && hash[2] == 0x3bfc6b9d && hash[3] == 0x1b0ec92e)
 			{
 				replacePixelShader(*pixelShader, ShaderRegistry::addPixelShader("shadowLinearize_ps.hlsl"));
 				return res;
