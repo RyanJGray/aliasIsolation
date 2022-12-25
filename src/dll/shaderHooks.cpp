@@ -107,7 +107,7 @@ HRESULT WINAPI CreatePixelShader_hook(void* thisptr, const char* bytecode, SIZE_
 			}
 
 			// Replace the original SMAA spatial pass by a post-sharpening filter
-			if (hash[0] == 0x02b5231b && hash[1] == 0x8b3879b8 && hash[2] == 0x7db9bc8d && hash[3] == 0xf46a9d78)
+			/*if (hash[0] == 0x02b5231b && hash[1] == 0x8b3879b8 && hash[2] == 0x7db9bc8d && hash[3] == 0xf46a9d78)
 			{
 				g_sharpenPsHandle = ShaderRegistry::addPixelShader("sharpen_ps.hlsl");
 				replacePixelShader(*pixelShader, g_sharpenPsHandle);
@@ -133,7 +133,7 @@ HRESULT WINAPI CreatePixelShader_hook(void* thisptr, const char* bytecode, SIZE_
 			{
 				replacePixelShader(*pixelShader, ShaderRegistry::addPixelShader("bloomMerge_ps.hlsl"));
 				return res;
-			}
+			}*/
 		}
 	}
 

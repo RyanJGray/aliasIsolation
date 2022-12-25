@@ -267,7 +267,13 @@ bool caOnDraw(ID3D11DeviceContext* context, ID3D11VertexShader* currentVs, ID3D1
         aliasIsolation_hookableOverlayRender(g_device, context);
 
 		return true;
-	}
+	} else {
+        if (!g_sharpenPsHandle.isValid()) {
+            LOG_MSG("[aliasIsolation::post] caOnDraw - Failed to get valid sharpen pixel shader handle!\n", "");
+        } else if (!currentPs) {
+            LOG_MSG("[aliasIsolation::post] caOnDraw - Invalid pointer to currentPs!\n", "");
+        }
+    }
 
 	return false;
 }
