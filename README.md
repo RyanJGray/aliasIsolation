@@ -1,3 +1,6 @@
+## Notice
+This fork of the mod has been discontinued/archived as it was merged into the original repository, please go upstream to https://github.com/aliasIsolation/aliasIsolation/releases for the latest releases.
+
 ## Overview
 Alias Isolation is a mod for Alien: Isolation. It adds temporal anti-aliasing into the shipped game, and fixes a few small issues with the rendering.
 
